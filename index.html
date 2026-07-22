@@ -185,7 +185,7 @@
       frontOH: def.silhouette.frontOverhang_mm,
       profile: def.silhouette.profile,
       glass: def.silhouette.glass,
-      photo: def.photo,
+      photos: def.photos || {},
       sources: def.sources || []
     };
   }
@@ -273,14 +273,14 @@ function drawSide() {
                    state.align === "rear" ? maxL - c.len : (maxL - c.len) / 2;
   const oA = off(A), oB = off(B);
   let s = `<line class="groundline" x1="-360" y1="${GROUND}" x2="${maxL + 200}" y2="${GROUND}"/>`;
-  // draw B first so A (primary) sits on top
-  if (state.view === "photo" && A.photo && B.photo) {
-    const img = (c, o, op) =>
-      `<image href="${c.photo.src}" x="${o}" y="${GROUND - c.hgt}" width="${c.len}" height="${c.hgt}" preserveAspectRatio="none" opacity="${op}"/>`;
-    s += img(B, oB, state.a === state.b ? 1 : 0.9) + img(A, oA, state.a === state.b ? 1 : 0.62);
-  } else {
-    s += sideBody(B, oB, "B") + sideBody(A, oA, "A");
-  }
+  // draw B first so A (primary) sits on top; per car, fall back to the
+  // silhouette when no side photo is available
+  const sideCar = (c, o, cls, op) =>
+    state.view === "photo" && c.photos.side
+      ? `<image href="${c.photos.side.src}" x="${o}" y="${GROUND - c.hgt}" width="${c.len}" height="${c.hgt}" preserveAspectRatio="none" opacity="${op}"/>`
+      : sideBody(c, o, cls);
+  s += sideCar(B, oB, "B", state.a === state.b ? 1 : 0.9) +
+       sideCar(A, oA, "A", state.a === state.b ? 1 : 0.62);
   // length dims below ground
   s += `<line class="ext" x1="${oA}" y1="${GROUND}" x2="${oA}" y2="${GROUND + 200}"/>` +
        `<line class="ext" x1="${oA + A.len}" y1="${GROUND}" x2="${oA + A.len}" y2="${GROUND + 200}"/>` +
@@ -317,7 +317,14 @@ function frontBody(car, cls) {
 function drawFront() {
   const A = CARS[state.a], B = CARS[state.b];
   let s = `<line class="groundline" x1="-1250" y1="${GROUND}" x2="1250" y2="${GROUND}"/>`;
-  s += frontBody(B, "B") + frontBody(A, "A");
+  // front renders include mirrors, so the image box maps to widthWithMirrors;
+  // per car, fall back to the silhouette when no front photo is available
+  const frontCar = (c, cls, op) =>
+    state.view === "photo" && c.photos.front
+      ? `<image href="${c.photos.front.src}" x="${-c.widM / 2}" y="${GROUND - c.hgt}" width="${c.widM}" height="${c.hgt}" preserveAspectRatio="none" opacity="${op}"/>`
+      : frontBody(c, cls);
+  s += frontCar(B, "B", state.a === state.b ? 1 : 0.9) +
+       frontCar(A, "A", state.a === state.b ? 1 : 0.62);
   s += `<line class="ext" x1="${-A.wid / 2}" y1="${GROUND}" x2="${-A.wid / 2}" y2="${GROUND + 200}"/>` +
        `<line class="ext" x1="${A.wid / 2}" y1="${GROUND}" x2="${A.wid / 2}" y2="${GROUND + 200}"/>` +
        `<line class="ext" x1="${-B.wid / 2}" y1="${GROUND}" x2="${-B.wid / 2}" y2="${GROUND + 380}"/>` +
@@ -368,9 +375,9 @@ function drawFooter() {
     .flatMap(k => CARS[k].sources)
     .map(s => `<a href="${s.url}">${s.label}</a>`).join(", ");
   document.getElementById("photoCredits").innerHTML = keys
-    .filter(k => CARS[k].photo)
+    .filter(k => CARS[k].photos.side)
     .map(k => {
-      const p = CARS[k].photo;
+      const p = CARS[k].photos.side;
       return `<a href="${p.sourceUrl}">${CARS[k].name} (${p.author}, ${p.license})</a>`;
     }).join(", ");
 }

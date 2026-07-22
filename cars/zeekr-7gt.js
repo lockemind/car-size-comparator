@@ -16,13 +16,15 @@ registerCar({
   "cargo_l": { "boot": 456, "frunk": 65 },
   "curbWeight_kg": { "min": 2160, "max": 2405 },
 
-  "photo": {
-    "src": "assets/zeekr.png",
-    "facing": "left",
-    "author": "JustAnotherCarDesigner",
-    "license": "CC0",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Zeekr_007_GT_007.jpg",
-    "note": "Chinese-market 007 GT, sold in Europe as the 7GT; background removed, scaled to real dimensions."
+  "photos": {
+    "side": {
+      "src": "assets/zeekr.png",
+      "facing": "left",
+      "author": "JustAnotherCarDesigner",
+      "license": "CC0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Zeekr_007_GT_007.jpg",
+      "note": "Chinese-market 007 GT, sold in Europe as the 7GT; background removed, scaled to real dimensions."
+    }
   },
 
   "silhouette": {

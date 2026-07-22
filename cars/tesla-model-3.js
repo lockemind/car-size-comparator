@@ -16,13 +16,22 @@ registerCar({
   "cargo_l": { "boot": 594, "frunk": 88 },
   "curbWeight_kg": { "min": 1611, "max": 1765 },
 
-  "photo": {
-    "src": "assets/model3.png",
-    "facing": "left",
-    "author": "carsized.com",
-    "license": "© carsized.com",
-    "sourceUrl": "https://www.carsized.com/en/cars/tesla-model-3-2023-sedan/",
-    "note": "Highland orthographic side render from carsized; trimmed to content."
+  "photos": {
+    "side": {
+      "src": "assets/model3.png",
+      "facing": "left",
+      "author": "carsized.com",
+      "license": "© carsized.com",
+      "sourceUrl": "https://www.carsized.com/en/cars/tesla-model-3-2023-sedan/",
+      "note": "Highland orthographic side render from carsized; trimmed to content."
+    },
+    "front": {
+      "src": "assets/model3_front.png",
+      "author": "carsized.com",
+      "license": "© carsized.com",
+      "sourceUrl": "https://www.carsized.com/en/cars/tesla-model-3-2023-sedan/front/",
+      "note": "Width including mirrors; trimmed to content."
+    }
   },
 
   "silhouette": {

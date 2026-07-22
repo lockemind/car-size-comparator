@@ -16,13 +16,22 @@ registerCar({
   "cargo_l": { "boot": 854, "frunk": 117 },
   "curbWeight_kg": { "min": 1901, "max": 1997 },
 
-  "photo": {
-    "src": "assets/modely.png",
-    "facing": "left",
-    "author": "carsized.com",
-    "license": "© carsized.com",
-    "sourceUrl": "https://www.carsized.com/en/cars/tesla-model-y-2025-suv/",
-    "note": "Juniper orthographic side render from carsized; trimmed to content."
+  "photos": {
+    "side": {
+      "src": "assets/modely.png",
+      "facing": "left",
+      "author": "carsized.com",
+      "license": "© carsized.com",
+      "sourceUrl": "https://www.carsized.com/en/cars/tesla-model-y-2025-suv/",
+      "note": "Juniper orthographic side render from carsized; trimmed to content."
+    },
+    "front": {
+      "src": "assets/modely_front.png",
+      "author": "carsized.com",
+      "license": "© carsized.com",
+      "sourceUrl": "https://www.carsized.com/en/cars/tesla-model-y-2025-suv/front/",
+      "note": "Width including mirrors; trimmed to content."
+    }
   },
 
   "silhouette": {

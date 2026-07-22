@@ -16,13 +16,22 @@ registerCar({
   "cargo_l": { "boot": 490, "frunk": null },
   "curbWeight_kg": { "min": 1490, "max": 1810 },
 
-  "photo": {
-    "src": "assets/a4.png",
-    "facing": "left",
-    "author": "carsized.com",
-    "license": "© carsized.com",
-    "sourceUrl": "https://www.carsized.com/en/cars/audi-a4-2012-estate/",
-    "note": "B8 Avant orthographic side render from carsized; trimmed to content."
+  "photos": {
+    "side": {
+      "src": "assets/a4.png",
+      "facing": "left",
+      "author": "carsized.com",
+      "license": "© carsized.com",
+      "sourceUrl": "https://www.carsized.com/en/cars/audi-a4-2012-estate/",
+      "note": "B8 Avant orthographic side render from carsized; trimmed to content."
+    },
+    "front": {
+      "src": "assets/a4_front.png",
+      "author": "carsized.com",
+      "license": "© carsized.com",
+      "sourceUrl": "https://www.carsized.com/en/cars/audi-a4-2012-estate/front/",
+      "note": "Width including mirrors; trimmed to content."
+    }
   },
 
   "silhouette": {

@@ -9,9 +9,9 @@ To add a car:
 1. Create `cars/<id>.js` following the schema below.
 2. Add a `<script src="cars/<id>.js"></script>` tag to `index.html` (order of the
    tags is the display order in the UI).
-3. Optional: drop a background-removed side-view PNG in `assets/` (nose facing
-   left, tightly cropped to the car). Without a photo the car renders in
-   silhouette view only.
+3. Optional: drop background-removed side-view / front-view PNGs in `assets/`
+   (side view nose facing left, both tightly cropped to the car). Views without
+   a photo fall back to the drawn silhouette.
 
 ## Schema
 
@@ -31,10 +31,13 @@ To add a car:
 | `cargo_l.boot` | number\|null | Boot capacity, litres |
 | `cargo_l.frunk` | number\|null | Front trunk capacity, litres (null if none) |
 | `curbWeight_kg.min` / `.max` | number | Curb-weight range across variants |
-| `photo.src` | string | Path to the cut-out side-view image (transparent PNG) |
-| `photo.facing` | string | `"left"` — direction the nose points in the image |
-| `photo.author` / `.license` / `.sourceUrl` | string | Attribution, rendered in the page footer |
-| `photo.note` | string | Any caveat about the image (shown nowhere, documentation only) |
+| `photos.side` | object\|absent | Cut-out side-view image (transparent PNG); silhouette is drawn when absent |
+| `photos.side.src` | string | Path to the image |
+| `photos.side.facing` | string | `"left"` — direction the nose points in the image |
+| `photos.front` | object\|absent | Cut-out front-view image, mirrors included — it is scaled to `widthWithMirrors`; silhouette is drawn when absent |
+| `photos.front.src` | string | Path to the image |
+| `photos.*.author` / `.license` / `.sourceUrl` | string | Attribution, rendered in the page footer |
+| `photos.*.note` | string | Any caveat about the image (shown nowhere, documentation only) |
 | `silhouette.wheelRadius_mm` | number | Tire outer radius, for the drawn wheels |
 | `silhouette.frontOverhang_mm` | number | Front-bumper-to-front-axle distance |
 | `silhouette.profile` | [x, y][] | Body outline, front-bottom → rear-bottom. x is a fraction of length, y a fraction of height above ground |
