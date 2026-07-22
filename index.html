@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Car Size Comparison — A4 B8 · Model 3 · Model Y · Zeekr 7GT</title>
+<style>
+  :root {
+    --bg: #f7f8fa;
+    --panel: #ffffff;
+    --fg: #1a202c;
+    --muted: #64748b;
+    --line: #e2e8f0;
+    --ground: #94a3b8;
+    --carA: #2563eb;
+    --carB: #e11d48;
+    --carA-soft: rgba(37, 99, 235, .10);
+    --carB-soft: rgba(225, 29, 72, .10);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1420;
+      --panel: #171e2e;
+      --fg: #e5eaf3;
+      --muted: #8b98ad;
+      --line: #2a3447;
+      --ground: #5b6a82;
+      --carA: #60a5fa;
+      --carB: #fb7185;
+      --carA-soft: rgba(96, 165, 250, .12);
+      --carB-soft: rgba(251, 113, 133, .12);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    padding: 24px 16px 48px;
+  }
+  .wrap { max-width: 1060px; margin: 0 auto; }
+  h1 { font-size: 26px; letter-spacing: -.02em; }
+  .sub { color: var(--muted); margin: 4px 0 20px; }
+  .controls {
+    display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: 12px; padding: 14px 16px; margin-bottom: 18px;
+  }
+  .controls label { font-size: 13px; color: var(--muted); display: block; margin-bottom: 3px; }
+  select, button.swap {
+    font: inherit; color: var(--fg); background: var(--bg);
+    border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px;
+  }
+  select:focus { outline: 2px solid var(--carA); outline-offset: 1px; }
+  .dotA, .dotB { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
+  .dotA { background: var(--carA); }
+  .dotB { background: var(--carB); }
+  button.swap { cursor: pointer; align-self: flex-end; }
+  button.swap:hover { border-color: var(--muted); }
+  .seg { display: flex; gap: 0; align-self: flex-end; }
+  .seg button {
+    font: inherit; font-size: 13px; padding: 7px 12px; cursor: pointer;
+    background: var(--bg); color: var(--muted); border: 1px solid var(--line);
+  }
+  .seg button:first-child { border-radius: 8px 0 0 8px; }
+  .seg button:last-child { border-radius: 0 8px 8px 0; }
+  .seg button + button { border-left: none; }
+  .seg button.on { background: var(--carA); border-color: var(--carA); color: #fff; }
+  .panel {
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: 12px; padding: 18px; margin-bottom: 18px;
+  }
+  .panel h2 { font-size: 15px; color: var(--muted); font-weight: 600; margin-bottom: 10px; }
+  .views { display: grid; grid-template-columns: 1fr; gap: 18px; }
+  @media (min-width: 900px) { .views { grid-template-columns: 2.1fr 1fr; } }
+  svg { width: 100%; height: auto; display: block; }
+  .bodyA { fill: var(--carA); fill-opacity: .13; stroke: var(--carA); stroke-width: 14; stroke-linejoin: round; }
+  .bodyB { fill: var(--carB); fill-opacity: .13; stroke: var(--carB); stroke-width: 14; stroke-linejoin: round; }
+  .glassA { fill: var(--carA); fill-opacity: .15; }
+  .glassB { fill: var(--carB); fill-opacity: .15; }
+  .wheelA { stroke: var(--carA); fill: none; }
+  .wheelB { stroke: var(--carB); fill: none; }
+  .groundline { stroke: var(--ground); stroke-width: 8; }
+  .dim { stroke-width: 9; fill: none; }
+  .dimA { stroke: var(--carA); } .dimB { stroke: var(--carB); }
+  .arrA { fill: var(--carA); } .arrB { fill: var(--carB); }
+  .ext { stroke: var(--muted); stroke-width: 5; stroke-dasharray: 26 26; opacity: .55; }
+  text { font-family: inherit; fill: var(--fg); }
+  .lblA { fill: var(--carA); font-weight: 600; }
+  .lblB { fill: var(--carB); font-weight: 600; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th, td { text-align: right; padding: 8px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; color: var(--muted); font-weight: 500; }
+  thead th { font-weight: 600; color: var(--fg); }
+  td.selA, th.selA { background: var(--carA-soft); }
+  td.selB, th.selB { background: var(--carB-soft); }
+  th.selA { color: var(--carA); } th.selB { color: var(--carB); }
+  td.diff { font-weight: 600; }
+  .tscroll { overflow-x: auto; }
+  .note { color: var(--muted); font-size: 13px; margin-top: 14px; }
+  .note a { color: inherit; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Car Size Comparison</h1>
+  <p class="sub">Audi A4 B8 Sedan (2010) · Tesla Model 3 (Highland) · Tesla Model Y (Juniper) · Zeekr 7GT — silhouettes drawn to scale, carsized-style.</p>
+
+  <div class="controls">
+    <div>
+      <label for="selA"><span class="dotA"></span>Car A</label>
+      <select id="selA"></select>
+    </div>
+    <div>
+      <label for="selB"><span class="dotB"></span>Car B</label>
+      <select id="selB"></select>
+    </div>
+    <button class="swap" id="swap" title="Swap A and B">⇄ Swap</button>
+    <div>
+      <label>Align</label>
+      <div class="seg" id="alignSeg">
+        <button data-v="front" class="on">Front</button>
+        <button data-v="center">Center</button>
+        <button data-v="rear">Rear</button>
+      </div>
+    </div>
+    <div>
+      <label>Units</label>
+      <div class="seg" id="unitSeg">
+        <button data-v="mm" class="on">mm</button>
+        <button data-v="cm">cm</button>
+        <button data-v="in">in</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="views">
+    <div class="panel">
+      <h2>Side view — length &amp; height</h2>
+      <svg id="sideSvg" viewBox="-560 -20 5720 2260" role="img" aria-label="Side view comparison"></svg>
+    </div>
+    <div class="panel">
+      <h2>Front view — width</h2>
+      <svg id="frontSvg" viewBox="-1320 -20 2640 2260" role="img" aria-label="Front view comparison"></svg>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Specifications</h2>
+    <div class="tscroll"><table id="specTable"></table></div>
+    <p class="note">
+      Δ column is Car B minus Car A. Silhouettes are stylized but scaled to real dimensions.
+      Sources: <a href="https://www.auto-data.net/en/audi-a4-b8-8k-2.0-tdi-170hp-4310">auto-data.net (A4 B8)</a>,
+      <a href="https://www.automobiledimension.com/model/tesla/model-3">automobiledimension (Model 3)</a>,
+      <a href="https://ev-database.org/car/3103/Tesla-Model-Y-RWD">EV Database (Model Y Juniper)</a>,
+      <a href="https://www.evspecifications.com/en/model/6ec9484">evspecifications (Zeekr 7GT)</a>.
+    </p>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+/* All geometry in millimetres. Ground line sits at y = GROUND in viewBox space. */
+const GROUND = 1700;
+
+const CARS = {
+  a4b8: {
+    name: "Audi A4 B8 Sedan", year: "2010",
+    len: 4703, wid: 1826, widM: 2040, hgt: 1427, wb: 2808, gc: 120,
+    boot: 480, frunk: null, weight: "1410–1615 kg",
+    wheelR: 329, frontOH: 870,
+    // Side profile: [x fraction of length, y fraction of height above ground]
+    profile: [
+      [0.000, 0.24], [0.000, 0.45], [0.018, 0.555], [0.13, 0.585],
+      [0.300, 0.635], [0.335, 0.660], [0.455, 0.955], [0.565, 1.000],
+      [0.685, 0.955], [0.800, 0.745], [0.945, 0.720], [0.985, 0.660],
+      [1.000, 0.520], [1.000, 0.25]
+    ],
+    glass: [[0.352, 0.68], [0.462, 0.925], [0.675, 0.925], [0.788, 0.735]]
+  },
+  model3: {
+    name: "Tesla Model 3", year: "Highland, 2024+",
+    len: 4720, wid: 1850, widM: 1933, hgt: 1440, wb: 2875, gc: 138,
+    boot: 594, frunk: 88, weight: "1611–1765 kg",
+    wheelR: 335, frontOH: 845,
+    profile: [
+      [0.000, 0.24], [0.000, 0.40], [0.020, 0.465], [0.160, 0.555],
+      [0.315, 0.645], [0.460, 0.930], [0.555, 1.000], [0.660, 0.975],
+      [0.820, 0.800], [0.935, 0.705], [0.975, 0.685], [1.000, 0.560],
+      [1.000, 0.25]
+    ],
+    glass: [[0.335, 0.665], [0.468, 0.905], [0.660, 0.945], [0.805, 0.785]]
+  },
+  modely: {
+    name: "Tesla Model Y", year: "Juniper, 2025+",
+    len: 4790, wid: 1920, widM: 2129, hgt: 1624, wb: 2890, gc: 167,
+    boot: 854, frunk: 117, weight: "1901–1997 kg",
+    wheelR: 356, frontOH: 870,
+    profile: [
+      [0.000, 0.20], [0.000, 0.36], [0.020, 0.415], [0.150, 0.505],
+      [0.300, 0.590], [0.440, 0.895], [0.550, 1.000], [0.670, 0.975],
+      [0.830, 0.830], [0.900, 0.760], [0.985, 0.660], [1.000, 0.600],
+      [1.000, 0.22]
+    ],
+    glass: [[0.318, 0.610], [0.452, 0.875], [0.665, 0.940], [0.870, 0.755]]
+  },
+  zeekr7gt: {
+    name: "Zeekr 7GT", year: "2025+",
+    len: 4817, wid: 1910, widM: 2070, hgt: 1456, wb: 2900, gc: 141,
+    boot: 456, frunk: 65, weight: "2160–2405 kg",
+    wheelR: 365, frontOH: 900,
+    profile: [
+      [0.000, 0.24], [0.000, 0.41], [0.020, 0.470], [0.170, 0.565],
+      [0.320, 0.650], [0.450, 0.945], [0.560, 1.000], [0.720, 0.985],
+      [0.865, 0.860], [0.955, 0.770], [0.985, 0.740], [1.000, 0.580],
+      [1.000, 0.25]
+    ],
+    glass: [[0.338, 0.670], [0.462, 0.915], [0.715, 0.945], [0.855, 0.820]]
+  }
+};
+
+let state = { a: "a4b8", b: "model3", align: "front", unit: "mm" };
+
+/* ---------- helpers ---------- */
+const r1 = n => Math.round(n * 10) / 10;
+function fmt(mm) {
+  if (mm == null) return "—";
+  if (state.unit === "cm") return r1(mm / 10).toLocaleString("en") + " cm";
+  if (state.unit === "in") return r1(mm / 25.4).toLocaleString("en") + " in";
+  return Math.round(mm).toLocaleString("en") + " mm";
+}
+function fmtDiff(mm) {
+  const s = mm > 0 ? "+" : mm < 0 ? "−" : "±";
+  return s + fmt(Math.abs(mm));
+}
+function smooth(pts) {
+  // Catmull-Rom → cubic bezier through all points
+  let d = `M ${pts[0][0].toFixed(1)} ${pts[0][1].toFixed(1)} `;
+  for (let i = 0; i < pts.length - 1; i++) {
+    const p0 = pts[Math.max(i - 1, 0)], p1 = pts[i],
+          p2 = pts[i + 1], p3 = pts[Math.min(i + 2, pts.length - 1)];
+    const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
+    const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+    d += `C ${c1[0].toFixed(1)} ${c1[1].toFixed(1)} ${c2[0].toFixed(1)} ${c2[1].toFixed(1)} ${p2[0].toFixed(1)} ${p2[1].toFixed(1)} `;
+  }
+  return d;
+}
+
+/* ---------- side view ---------- */
+function sideBody(car, offX, cls) {
+  const P = car.profile.map(([fx, fy]) => [offX + fx * car.len, GROUND - fy * car.hgt]);
+  const gcY = GROUND - (car.gc + 40);          // underbody line
+  const cY = GROUND - car.wheelR;              // wheel centre
+  const archR = car.wheelR + 60;
+  const dx = Math.sqrt(archR * archR - (gcY - cY) ** 2);
+  const fa = offX + car.frontOH, ra = fa + car.wb;
+  let d = smooth(P);
+  d += `L ${(ra + dx).toFixed(1)} ${gcY.toFixed(1)} ` +
+       `A ${archR} ${archR} 0 1 0 ${(ra - dx).toFixed(1)} ${gcY.toFixed(1)} ` +
+       `L ${(fa + dx).toFixed(1)} ${gcY.toFixed(1)} ` +
+       `A ${archR} ${archR} 0 1 0 ${(fa - dx).toFixed(1)} ${gcY.toFixed(1)} Z`;
+  let g = `<path class="body${cls}" d="${d}"/>`;
+  // glass
+  const G = car.glass.map(([fx, fy]) => [offX + fx * car.len, GROUND - fy * car.hgt]);
+  g += `<path class="glass${cls}" d="${smooth(G)} Z"/>`;
+  // wheels
+  for (const ax of [fa, ra]) {
+    g += `<circle class="wheel${cls}" cx="${ax}" cy="${cY}" r="${car.wheelR}" stroke-width="30"/>` +
+         `<circle class="wheel${cls}" cx="${ax}" cy="${cY}" r="${(car.wheelR * 0.58).toFixed(0)}" stroke-width="14" opacity=".7"/>`;
+  }
+  return g;
+}
+function hDim(y, x0, x1, label, cls) {
+  const a = 70; // arrowhead size
+  return `<line class="dim dim${cls}" x1="${x0}" y1="${y}" x2="${x1}" y2="${y}"/>` +
+    `<polygon class="arr${cls}" points="${x0},${y} ${x0 + a},${y - a / 2.4} ${x0 + a},${y + a / 2.4}"/>` +
+    `<polygon class="arr${cls}" points="${x1},${y} ${x1 - a},${y - a / 2.4} ${x1 - a},${y + a / 2.4}"/>` +
+    `<text class="lbl${cls}" x="${(x0 + x1) / 2}" y="${y - 28}" text-anchor="middle" font-size="95">${label}</text>`;
+}
+function vDim(x, y0, y1, label, cls) {
+  const a = 70;
+  return `<line class="dim dim${cls}" x1="${x}" y1="${y0}" x2="${x}" y2="${y1}"/>` +
+    `<polygon class="arr${cls}" points="${x},${y0} ${x - a / 2.4},${y0 + a} ${x + a / 2.4},${y0 + a}"/>` +
+    `<polygon class="arr${cls}" points="${x},${y1} ${x - a / 2.4},${y1 - a} ${x + a / 2.4},${y1 - a}"/>` +
+    `<text class="lbl${cls}" x="${x - 30}" y="${(y0 + y1) / 2}" text-anchor="middle" font-size="95" transform="rotate(-90 ${x - 30} ${(y0 + y1) / 2})">${label}</text>`;
+}
+function drawSide() {
+  const A = CARS[state.a], B = CARS[state.b];
+  const maxL = Math.max(A.len, B.len);
+  const off = c => state.align === "front" ? 0 :
+                   state.align === "rear" ? maxL - c.len : (maxL - c.len) / 2;
+  const oA = off(A), oB = off(B);
+  let s = `<line class="groundline" x1="-360" y1="${GROUND}" x2="${maxL + 200}" y2="${GROUND}"/>`;
+  // draw B first so A (primary) sits on top
+  s += sideBody(B, oB, "B") + sideBody(A, oA, "A");
+  // length dims below ground
+  s += `<line class="ext" x1="${oA}" y1="${GROUND}" x2="${oA}" y2="${GROUND + 200}"/>` +
+       `<line class="ext" x1="${oA + A.len}" y1="${GROUND}" x2="${oA + A.len}" y2="${GROUND + 200}"/>` +
+       `<line class="ext" x1="${oB}" y1="${GROUND}" x2="${oB}" y2="${GROUND + 380}"/>` +
+       `<line class="ext" x1="${oB + B.len}" y1="${GROUND}" x2="${oB + B.len}" y2="${GROUND + 380}"/>`;
+  s += hDim(GROUND + 200, oA, oA + A.len, `${A.name} — ${fmt(A.len)}`, "A");
+  s += hDim(GROUND + 380, oB, oB + B.len, `${B.name} — ${fmt(B.len)} (${fmtDiff(B.len - A.len)})`, "B");
+  // height dims at left
+  s += `<line class="ext" x1="${Math.min(oA, oB) - 20}" y1="${GROUND - A.hgt}" x2="-160" y2="${GROUND - A.hgt}"/>` +
+       `<line class="ext" x1="${Math.min(oA, oB) - 20}" y1="${GROUND - B.hgt}" x2="-330" y2="${GROUND - B.hgt}"/>`;
+  s += vDim(-160, GROUND - A.hgt, GROUND, fmt(A.hgt), "A");
+  s += vDim(-330, GROUND - B.hgt, GROUND, `${fmt(B.hgt)} (${fmtDiff(B.hgt - A.hgt)})`, "B");
+  document.getElementById("sideSvg").innerHTML = s;
+}
+
+/* ---------- front view ---------- */
+function frontBody(car, cls) {
+  const h = car.hgt, half = car.wid / 2;
+  const pts = [
+    [-half * 0.96, 0.13 * h], [-half, 0.33 * h], [-half * 0.985, 0.58 * h],
+    [-half * 0.70, 0.955 * h], [-half * 0.42, 1.0 * h],
+    [half * 0.42, 1.0 * h], [half * 0.70, 0.955 * h],
+    [half * 0.985, 0.58 * h], [half, 0.33 * h], [half * 0.96, 0.13 * h]
+  ].map(([x, y]) => [x, GROUND - y]);
+  let g = `<path class="body${cls}" d="${smooth(pts)} Z"/>`;
+  // mirrors
+  const mHalf = car.widM / 2, my = GROUND - 0.62 * car.hgt;
+  for (const sgn of [-1, 1]) {
+    g += `<line class="dim dim${cls}" x1="${sgn * half * 0.97}" y1="${my}" x2="${sgn * (mHalf - 140)}" y2="${my - 40}"/>` +
+         `<ellipse class="arr${cls}" cx="${sgn * (mHalf - 90)}" cy="${my - 50}" rx="95" ry="60" opacity=".8"/>`;
+  }
+  return g;
+}
+function drawFront() {
+  const A = CARS[state.a], B = CARS[state.b];
+  let s = `<line class="groundline" x1="-1250" y1="${GROUND}" x2="1250" y2="${GROUND}"/>`;
+  s += frontBody(B, "B") + frontBody(A, "A");
+  s += `<line class="ext" x1="${-A.wid / 2}" y1="${GROUND}" x2="${-A.wid / 2}" y2="${GROUND + 200}"/>` +
+       `<line class="ext" x1="${A.wid / 2}" y1="${GROUND}" x2="${A.wid / 2}" y2="${GROUND + 200}"/>` +
+       `<line class="ext" x1="${-B.wid / 2}" y1="${GROUND}" x2="${-B.wid / 2}" y2="${GROUND + 380}"/>` +
+       `<line class="ext" x1="${B.wid / 2}" y1="${GROUND}" x2="${B.wid / 2}" y2="${GROUND + 380}"/>`;
+  s += hDim(GROUND + 200, -A.wid / 2, A.wid / 2, fmt(A.wid), "A");
+  s += hDim(GROUND + 380, -B.wid / 2, B.wid / 2, `${fmt(B.wid)} (${fmtDiff(B.wid - A.wid)})`, "B");
+  document.getElementById("frontSvg").innerHTML = s;
+}
+
+/* ---------- table ---------- */
+const ROWS = [
+  ["Length", c => c.len, true],
+  ["Width (excl. mirrors)", c => c.wid, true],
+  ["Width (incl. mirrors)", c => c.widM, true],
+  ["Height", c => c.hgt, true],
+  ["Wheelbase", c => c.wb, true],
+  ["Ground clearance", c => c.gc, true],
+  ["Boot capacity", c => c.boot == null ? "—" : c.boot + " L", false],
+  ["Frunk", c => c.frunk == null ? "—" : c.frunk + " L", false],
+  ["Kerb weight", c => c.weight, false]
+];
+function drawTable() {
+  const keys = Object.keys(CARS);
+  const cls = k => k === state.a ? " class=\"selA\"" : k === state.b ? " class=\"selB\"" : "";
+  let h = "<thead><tr><th>Spec</th>" +
+    keys.map(k => `<th${cls(k)}>${CARS[k].name}<br><span style="font-weight:400;color:var(--muted)">${CARS[k].year}</span></th>`).join("") +
+    "<th>Δ B−A</th></tr></thead><tbody>";
+  for (const [label, get, numeric] of ROWS) {
+    h += `<tr><td>${label}</td>`;
+    for (const k of keys) {
+      const v = get(CARS[k]);
+      h += `<td${cls(k)}>${numeric ? fmt(v) : v}</td>`;
+    }
+    h += numeric
+      ? `<td class="diff">${fmtDiff(get(CARS[state.b]) - get(CARS[state.a]))}</td>`
+      : "<td>—</td>";
+    h += "</tr>";
+  }
+  h += "</tbody>";
+  document.getElementById("specTable").innerHTML = h;
+}
+
+/* ---------- wiring ---------- */
+function drawAll() { drawSide(); drawFront(); drawTable(); }
+function fillSelects() {
+  for (const [id, key] of [["selA", "a"], ["selB", "b"]]) {
+    const sel = document.getElementById(id);
+    sel.innerHTML = Object.keys(CARS)
+      .map(k => `<option value="${k}">${CARS[k].name} (${CARS[k].year})</option>`).join("");
+    sel.value = state[key];
+    sel.addEventListener("change", () => { state[key] = sel.value; drawAll(); });
+  }
+}
+document.getElementById("swap").addEventListener("click", () => {
+  [state.a, state.b] = [state.b, state.a];
+  document.getElementById("selA").value = state.a;
+  document.getElementById("selB").value = state.b;
+  drawAll();
+});
+for (const [segId, prop] of [["alignSeg", "align"], ["unitSeg", "unit"]]) {
+  const seg = document.getElementById(segId);
+  seg.addEventListener("click", e => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    state[prop] = b.dataset.v;
+    seg.querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b));
+    drawAll();
+  });
+}
+fillSelects();
+drawAll();
+</script>
+</body>
+</html>
