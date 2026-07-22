@@ -19,10 +19,10 @@ registerCar({
   "photo": {
     "src": "assets/modely.png",
     "facing": "left",
-    "author": "Bretwa",
-    "license": "CC BY-SA 4.0",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Left_view_of_Tesla_Model_Y_in_Courbevoie_-_2021-09-20.jpg",
-    "note": "Pre-facelift car (Juniper profile is nearly identical); background removed, scaled to Juniper dimensions."
+    "author": "carsized.com",
+    "license": "© carsized.com",
+    "sourceUrl": "https://www.carsized.com/en/cars/tesla-model-y-2025-suv/",
+    "note": "Juniper orthographic side render from carsized; trimmed to content."
   },
 
   "silhouette": {

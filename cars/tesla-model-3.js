@@ -19,10 +19,10 @@ registerCar({
   "photo": {
     "src": "assets/model3.png",
     "facing": "left",
-    "author": "Kazyakuruma",
-    "license": "CC0",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tesla_Model_3_(2023),_long_range,_Japan,_left-side.jpg",
-    "note": "Highland in a Tesla showroom; background removed, scaled to real dimensions."
+    "author": "carsized.com",
+    "license": "© carsized.com",
+    "sourceUrl": "https://www.carsized.com/en/cars/tesla-model-3-2023-sedan/",
+    "note": "Highland orthographic side render from carsized; trimmed to content."
   },
 
   "silhouette": {
