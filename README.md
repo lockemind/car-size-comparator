@@ -12,6 +12,7 @@ Currently loaded cars:
 - Tesla Model 3 (Highland, 2024+)
 - Tesla Model Y (pre-facelift, 2020–2024)
 - Tesla Model Y (Juniper, 2025+)
+- Polestar 4 (2024+)
 - Zeekr 7GT (2025+)
 
 ## Features
