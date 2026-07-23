@@ -52,6 +52,8 @@
     border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px;
   }
   select:focus { outline: 2px solid var(--carA); outline-offset: 1px; }
+  input[type="range"] { width: 130px; accent-color: var(--carA); display: block; margin-top: 8px; }
+  #opVal { color: var(--fg); }
   .dotA, .dotB { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
   .dotA { background: var(--carA); }
   .dotB { background: var(--carB); }
@@ -139,6 +141,10 @@
         <button data-v="silhouette">Silhouettes</button>
       </div>
     </div>
+    <div>
+      <label for="opRange"><span class="dotA"></span>Car A opacity <span id="opVal">62%</span></label>
+      <input type="range" id="opRange" min="0" max="100" value="62">
+    </div>
   </div>
 
   <div class="views">
@@ -202,7 +208,7 @@
 const GROUND = 1700;
 
 const keys = Object.keys(CARS);
-let state = { a: keys[0], b: keys[1] || keys[0], align: "front", unit: "mm", view: "photo" };
+let state = { a: keys[0], b: keys[1] || keys[0], align: "front", unit: "mm", view: "photo", aop: 0.62 };
 
 /* ---------- helpers ---------- */
 const r1 = n => Math.round(n * 10) / 10;
@@ -277,11 +283,13 @@ function drawSide() {
   // draw B first so A (primary) sits on top; per car, fall back to the
   // silhouette when no side photo is available
   const sideCar = (c, o, cls, op) =>
-    state.view === "photo" && c.photos.side
-      ? `<image href="${c.photos.side.src}" x="${o}" y="${GROUND - c.hgt}" width="${c.len}" height="${c.hgt}" preserveAspectRatio="none" opacity="${op}"/>`
-      : sideBody(c, o, cls);
+    `<g opacity="${op}">` +
+    (state.view === "photo" && c.photos.side
+      ? `<image href="${c.photos.side.src}" x="${o}" y="${GROUND - c.hgt}" width="${c.len}" height="${c.hgt}" preserveAspectRatio="none"/>`
+      : sideBody(c, o, cls)) +
+    `</g>`;
   s += sideCar(B, oB, "B", state.a === state.b ? 1 : 0.9) +
-       sideCar(A, oA, "A", state.a === state.b ? 1 : 0.62);
+       sideCar(A, oA, "A", state.a === state.b ? 1 : state.aop);
   // length dims below ground
   s += `<line class="ext" x1="${oA}" y1="${GROUND}" x2="${oA}" y2="${GROUND + 200}"/>` +
        `<line class="ext" x1="${oA + A.len}" y1="${GROUND}" x2="${oA + A.len}" y2="${GROUND + 200}"/>` +
@@ -321,11 +329,13 @@ function drawFront() {
   // front renders include mirrors, so the image box maps to widthWithMirrors;
   // per car, fall back to the silhouette when no front photo is available
   const frontCar = (c, cls, op) =>
-    state.view === "photo" && c.photos.front
-      ? `<image href="${c.photos.front.src}" x="${-c.widM / 2}" y="${GROUND - c.hgt}" width="${c.widM}" height="${c.hgt}" preserveAspectRatio="none" opacity="${op}"/>`
-      : frontBody(c, cls);
+    `<g opacity="${op}">` +
+    (state.view === "photo" && c.photos.front
+      ? `<image href="${c.photos.front.src}" x="${-c.widM / 2}" y="${GROUND - c.hgt}" width="${c.widM}" height="${c.hgt}" preserveAspectRatio="none"/>`
+      : frontBody(c, cls)) +
+    `</g>`;
   s += frontCar(B, "B", state.a === state.b ? 1 : 0.9) +
-       frontCar(A, "A", state.a === state.b ? 1 : 0.62);
+       frontCar(A, "A", state.a === state.b ? 1 : state.aop);
   s += `<line class="ext" x1="${-A.wid / 2}" y1="${GROUND}" x2="${-A.wid / 2}" y2="${GROUND + 200}"/>` +
        `<line class="ext" x1="${A.wid / 2}" y1="${GROUND}" x2="${A.wid / 2}" y2="${GROUND + 200}"/>` +
        `<line class="ext" x1="${-B.wid / 2}" y1="${GROUND}" x2="${-B.wid / 2}" y2="${GROUND + 380}"/>` +
@@ -399,6 +409,11 @@ document.getElementById("swap").addEventListener("click", () => {
   document.getElementById("selA").value = state.a;
   document.getElementById("selB").value = state.b;
   drawAll();
+});
+document.getElementById("opRange").addEventListener("input", e => {
+  state.aop = e.target.value / 100;
+  document.getElementById("opVal").textContent = e.target.value + "%";
+  drawSide(); drawFront();
 });
 for (const [segId, prop] of [["alignSeg", "align"], ["unitSeg", "unit"], ["viewSeg", "view"]]) {
   const seg = document.getElementById(segId);
