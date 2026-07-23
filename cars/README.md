@@ -24,7 +24,7 @@ To add a car:
 | `years` | string | Production years of this generation |
 | `dimensions_mm.length` | number | Exterior length |
 | `dimensions_mm.width` | number | Width excluding mirrors |
-| `dimensions_mm.widthWithMirrors` | number | Width including mirrors |
+| `dimensions_mm.widthWithMirrors` | number\|absent | Width including mirrors (some makers don't publish it; table shows — when absent) |
 | `dimensions_mm.height` | number | Overall height |
 | `dimensions_mm.wheelbase` | number | Wheelbase |
 | `dimensions_mm.groundClearance` | number | Ground clearance |
@@ -34,7 +34,7 @@ To add a car:
 | `photos.side` | object\|absent | Cut-out side-view image (transparent PNG); silhouette is drawn when absent |
 | `photos.side.src` | string | Path to the image |
 | `photos.side.facing` | string | `"left"` — direction the nose points in the image |
-| `photos.front` | object\|absent | Cut-out front-view image, mirrors included — it is scaled to `widthWithMirrors`; silhouette is drawn when absent |
+| `photos.front` | object\|absent | Cut-out front-view image, mirrors included — height-anchored (scaled to `height`, natural aspect, bottom-centered); silhouette is drawn when absent |
 | `photos.front.src` | string | Path to the image |
 | `photos.*.author` / `.license` / `.sourceUrl` | string | Attribution, rendered in the page footer |
 | `photos.*.note` | string | Any caveat about the image (shown nowhere, documentation only) |

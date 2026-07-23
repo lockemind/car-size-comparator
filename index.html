@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Car Size Comparison — A4 B8 · Model 3 (2017 &amp; Highland) · Model Y (2020 &amp; Juniper) · Polestar 4 · Zeekr 7GT</title>
+<title>Car Size Comparison — A4 B8 · Model 3 (2017 &amp; Highland) · Model Y (2020 &amp; Juniper) · Meriva B · Seal · EV3 · EV6 · Polestar 4 · Zeekr 7GT</title>
 <style>
   :root {
     --bg: #f7f8fa;
@@ -197,10 +197,14 @@
   }
 </script>
 <script src="cars/audi-a4-b8.js"></script>
+<script src="cars/opel-meriva-b.js"></script>
 <script src="cars/tesla-model-3-2017.js"></script>
 <script src="cars/tesla-model-3.js"></script>
+<script src="cars/byd-seal.js"></script>
 <script src="cars/tesla-model-y-2020.js"></script>
 <script src="cars/tesla-model-y.js"></script>
+<script src="cars/kia-ev3.js"></script>
+<script src="cars/kia-ev6.js"></script>
 <script src="cars/polestar-4.js"></script>
 <script src="cars/zeekr-7gt.js"></script>
 <script>
@@ -317,8 +321,8 @@ function frontBody(car, cls) {
     [half * 0.985, 0.58 * h], [half, 0.33 * h], [half * 0.96, 0.13 * h]
   ].map(([x, y]) => [x, GROUND - y]);
   let g = `<path class="body${cls}" d="${smooth(pts)} Z"/>`;
-  // mirrors
-  const mHalf = car.widM / 2, my = GROUND - 0.62 * car.hgt;
+  // mirrors (estimate span when no published width-incl-mirrors figure)
+  const mHalf = (car.widM || car.wid * 1.1) / 2, my = GROUND - 0.62 * car.hgt;
   for (const sgn of [-1, 1]) {
     g += `<line class="dim dim${cls}" x1="${sgn * half * 0.97}" y1="${my}" x2="${sgn * (mHalf - 140)}" y2="${my - 40}"/>` +
          `<ellipse class="arr${cls}" cx="${sgn * (mHalf - 90)}" cy="${my - 50}" rx="95" ry="60" opacity=".8"/>`;
@@ -328,14 +332,18 @@ function frontBody(car, cls) {
 function drawFront() {
   const A = CARS[state.a], B = CARS[state.b];
   let s = `<line class="groundline" x1="-1250" y1="${GROUND}" x2="1250" y2="${GROUND}"/>`;
-  // front renders include mirrors, so the image box maps to widthWithMirrors;
-  // per car, fall back to the silhouette when no front photo is available
-  const frontCar = (c, cls, op) =>
-    `<g opacity="${op}">` +
-    (state.view === "photo" && c.photos.front
-      ? `<image href="${c.photos.front.src}" x="${-c.widM / 2}" y="${GROUND - c.hgt}" width="${c.widM}" height="${c.hgt}" preserveAspectRatio="none"/>`
-      : frontBody(c, cls)) +
-    `</g>`;
+  // front renders are height-anchored ("meet", bottom-center): the image keeps
+  // its natural aspect inside a generous box, so mirror spans that don't match
+  // published widthWithMirrors figures never stretch the car. Per car, fall
+  // back to the silhouette when no front photo is available.
+  const frontCar = (c, cls, op) => {
+    const boxW = Math.max(c.widM || 0, c.wid * 1.25);
+    return `<g opacity="${op}">` +
+      (state.view === "photo" && c.photos.front
+        ? `<image href="${c.photos.front.src}" x="${-boxW / 2}" y="${GROUND - c.hgt}" width="${boxW}" height="${c.hgt}" preserveAspectRatio="xMidYMax meet"/>`
+        : frontBody(c, cls)) +
+      `</g>`;
+  };
   s += frontCar(B, "B", state.a === state.b ? 1 : 0.9) +
        frontCar(A, "A", state.a === state.b ? 1 : state.aop);
   s += `<line class="ext" x1="${-A.wid / 2}" y1="${GROUND}" x2="${-A.wid / 2}" y2="${GROUND + 200}"/>` +
@@ -370,8 +378,9 @@ function drawTable() {
       const v = get(CARS[k]);
       h += `<td${cls(k)}>${numeric ? fmt(v) : v}</td>`;
     }
-    h += numeric
-      ? `<td class="diff">${fmtDiff(get(CARS[state.b]) - get(CARS[state.a]))}</td>`
+    const va = get(CARS[state.a]), vb = get(CARS[state.b]);
+    h += numeric && va != null && vb != null
+      ? `<td class="diff">${fmtDiff(vb - va)}</td>`
       : "<td>—</td>";
     h += "</tr>";
   }

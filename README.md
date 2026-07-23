@@ -8,10 +8,14 @@ front-view photos scaled to true dimensions, plus a full spec table.
 Currently loaded cars:
 
 - Audi A4 Avant (B8, 2010)
+- Opel Meriva B (2010–2017)
 - Tesla Model 3 (pre-facelift, 2017–2023)
 - Tesla Model 3 (Highland, 2024+)
+- BYD Seal (2022+)
 - Tesla Model Y (pre-facelift, 2020–2024)
 - Tesla Model Y (Juniper, 2025+)
+- Kia EV3 (2024+)
+- Kia EV6 (pre-facelift, 2021–2024)
 - Polestar 4 (2024+)
 - Zeekr 7GT (2025+)
 
