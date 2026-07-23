@@ -17,6 +17,10 @@ Currently loaded cars:
 - Kia EV3 (2024+)
 - Kia EV6 (pre-facelift, 2021–2024)
 - VW ID.4 (2020+)
+- Hyundai Kauai / Kona (SX2, 2023+)
+- Hyundai Tucson (NX4 facelift, 2024+)
+- Hyundai Ioniq 5 (pre-facelift, 2021–2024)
+- Hyundai Ioniq 6 (2022+)
 - Polestar 4 (2024+)
 - Zeekr 7GT (2025+)
 
