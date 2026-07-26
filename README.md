@@ -8,6 +8,7 @@ front-view photos scaled to true dimensions, plus a full spec table.
 Currently loaded cars:
 
 - Audi A4 Avant (B8, 2010)
+- VW Polo (Mk5 / 6R, 2009–2014)
 - Opel Meriva B (2010–2017)
 - Tesla Model 3 (pre-facelift, 2017–2023)
 - Tesla Model 3 (Highland, 2024+)
@@ -24,6 +25,7 @@ Currently loaded cars:
 - Hyundai Ioniq 6 (2022+)
 - Polestar 4 (2024+)
 - Zeekr 7GT (2025+)
+- Zeekr 7X (2024+)
 
 ## Features
 
