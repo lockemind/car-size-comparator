@@ -23,7 +23,7 @@ registerCar({
       "author": "JustAnotherCarDesigner",
       "license": "CC0",
       "sourceUrl": "https://commons.wikimedia.org/wiki/File:Zeekr_007_GT_007.jpg",
-      "note": "Chinese-market 007 GT, sold in Europe as the 7GT; background removed, scaled to real dimensions."
+      "note": "Chinese-market 007 GT, sold in Europe as the 7GT; background removed. Faint ground-shadow lines cleaned and re-cropped tight to the car body (nose/tail/roof/tyre at the frame edges) so it aligns with the length/height box; note this is a photo, not an orthographic render, so a slight perspective remains."
     }
   },
 
