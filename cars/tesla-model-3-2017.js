@@ -15,6 +15,7 @@ registerCar({
   },
   "cargo_l": { "boot": 561, "frunk": 88 },
   "curbWeight_kg": { "min": 1612, "max": 1844 },
+  "price_eur": { "min": 24000, "max": 38000, "basis": "used" },
 
   "photos": {
     "side": {

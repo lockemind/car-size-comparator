@@ -164,6 +164,9 @@
     <p class="note">
       Δ column is Car B minus Car A. Photos and silhouettes are scaled to real dimensions; photos have
       slight perspective, so treat them as close approximations.
+      Prices are indicative Portuguese-market ranges in EUR incl. VAT (as of Aug 2026), spanning
+      trims/battery options; <strong>†</strong> marks a used-market estimate for models no longer sold
+      new. The XPeng P7 isn't sold in Portugal, so its price shows “—”.
       Car data lives in <code>cars/*.js</code> (see <code>cars/README.md</code> for the schema).
       Spec sources: <span id="specSources"></span>.
       Photos: <span id="photoCredits"></span>; cropped and scaled to real dimensions.
@@ -187,6 +190,7 @@
       hgt: d.height, wb: d.wheelbase, gc: d.groundClearance,
       boot: def.cargo_l.boot, frunk: def.cargo_l.frunk,
       weight: w.min === w.max ? `${w.min} kg` : `${w.min}–${w.max} kg`,
+      price: def.price_eur || null,
       wheelR: def.silhouette.wheelRadius_mm,
       frontOH: def.silhouette.frontOverhang_mm,
       profile: def.silhouette.profile,
@@ -240,6 +244,11 @@ function fmt(mm) {
 function fmtDiff(mm) {
   const s = mm > 0 ? "+" : mm < 0 ? "−" : "±";
   return s + fmt(Math.abs(mm));
+}
+function priceStr(p) {
+  if (!p) return "—";
+  const e = n => "€" + Math.round(n).toLocaleString("en");
+  return e(p.min) + "–" + e(p.max) + (p.basis === "used" ? " †" : "");
 }
 function smooth(pts) {
   // Catmull-Rom → cubic bezier through all points
@@ -378,7 +387,8 @@ const ROWS = [
   ["Ground clearance", c => c.gc, true],
   ["Boot capacity", c => c.boot == null ? "—" : c.boot + " L", false],
   ["Frunk", c => c.frunk == null ? "—" : c.frunk + " L", false],
-  ["Kerb weight", c => c.weight, false]
+  ["Kerb weight", c => c.weight, false],
+  ["Price (Portugal)", c => priceStr(c.price), false]
 ];
 function drawTable() {
   const cls = k => k === state.a ? " class=\"selA\"" : k === state.b ? " class=\"selB\"" : "";

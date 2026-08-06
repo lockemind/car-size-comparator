@@ -31,6 +31,9 @@ To add a car:
 | `cargo_l.boot` | number\|null | Boot capacity, litres |
 | `cargo_l.frunk` | number\|null | Front trunk capacity, litres (null if none) |
 | `curbWeight_kg.min` / `.max` | number | Curb-weight range across variants |
+| `price_eur` | object\|absent | Indicative Portuguese-market price range; omit when the model isn't sold in Portugal (table shows —) |
+| `price_eur.min` / `.max` | number | Price range in EUR incl. VAT, spanning trims/battery options |
+| `price_eur.basis` | string | `"new"` (current list price) or `"used"` (used-market estimate for models no longer sold new) |
 | `photos.side` | object\|absent | Cut-out side-view image (transparent PNG); silhouette is drawn when absent |
 | `photos.side.src` | string | Path to the image |
 | `photos.side.facing` | string | `"left"` — direction the nose points in the image |
