@@ -10,6 +10,7 @@ Currently loaded cars:
 - Audi A4 Avant (B8, 2010)
 - VW Polo (Mk5 / 6R, 2009–2014)
 - Opel Meriva B (2010–2017)
+- Hyundai i30 (FD, 2007–2012)
 - Tesla Model 3 (pre-facelift, 2017–2023)
 - Tesla Model 3 (Highland, 2024+)
 - BYD Seal (2022+)
