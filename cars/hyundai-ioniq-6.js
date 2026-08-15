@@ -1,7 +1,7 @@
 registerCar({
   "id": "hyundai-ioniq-6",
   "name": "Hyundai Ioniq 6",
-  "subtitle": "2022+",
+  "subtitle": "2022+, incl. 2025 facelift",
   "bodyStyle": "sedan",
   "years": "2022–present",
 
@@ -23,7 +23,7 @@ registerCar({
       "author": "carsized.com",
       "license": "© carsized.com",
       "sourceUrl": "https://www.carsized.com/en/cars/hyundai-ioniq-6-2022-sedan/",
-      "note": "Orthographic side render from carsized; trimmed to content."
+      "note": "Orthographic side render from carsized; trimmed to content. The 2025 facelift kept identical dimensions (only the front/rear fascia and lights changed), so this render also represents the current car; carsized has no orthographic facelift render (only the wide-body Ioniq 6 N)."
     },
     "front": {
       "src": "assets/ioniq6_front.png",

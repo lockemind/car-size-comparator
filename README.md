@@ -25,6 +25,7 @@ Currently loaded cars:
 - Hyundai Kauai / Kona (SX2, 2023+)
 - Hyundai Tucson (NX4 facelift, 2024+)
 - Kia Sportage (NQ5 facelift, 2025+)
+- Volvo XC60 (2nd gen, 2017+)
 - Hyundai Ioniq 5 (pre-facelift, 2021–2024)
 - Hyundai Ioniq 5 (facelift, 2025+)
 - Hyundai Ioniq 6 (2022+)
