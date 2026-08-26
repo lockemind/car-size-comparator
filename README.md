@@ -18,6 +18,7 @@ Currently loaded cars:
 - Tesla Model Y (pre-facelift, 2020–2024)
 - Tesla Model Y (Juniper, 2025+)
 - Kia EV3 (2024+)
+- Kia EV4 (hatchback, 2025+)
 - Kia EV6 (pre-facelift, 2021–2024)
 - VW ID.4 (2020+)
 - Škoda Elroq (2025+)
