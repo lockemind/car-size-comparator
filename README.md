@@ -29,6 +29,8 @@ Currently loaded cars:
 - Volvo XC60 (2nd gen, 2017+)
 - Volvo V60 (2nd gen, 2018+)
 - Volvo V90 (2020 facelift, 2016+)
+- Volvo EX60 (2026+)
+- BMW iX3 (Neue Klasse, 2025+)
 - Hyundai Ioniq 5 (pre-facelift, 2021–2024)
 - Hyundai Ioniq 5 (facelift, 2025+)
 - Hyundai Ioniq 6 (2022+)
