@@ -9,6 +9,7 @@ Currently loaded cars:
 
 - Audi A4 Avant (B6, 2001–2004)
 - Audi A4 Avant (B8, 2010)
+- Mercedes E300de (W213 facelift, 2020–2023)
 - VW Polo (Mk5 / 6R, 2009–2014)
 - Opel Meriva B (2010–2017)
 - Hyundai i30 (FD, 2007–2012)
