@@ -29,6 +29,7 @@ Currently loaded cars:
 - Hyundai Tucson (NX4 facelift, 2024+)
 - Kia Sportage (NQ5 facelift, 2025+)
 - Volvo XC60 (2nd gen, 2017+)
+- Volvo V60 (1st gen, 2010–2018)
 - Volvo V60 (2nd gen, 2018+)
 - Volvo V90 (2020 facelift, 2016+)
 - Volvo EX60 (2026+)
